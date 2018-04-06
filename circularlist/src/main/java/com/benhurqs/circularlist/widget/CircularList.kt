@@ -1,16 +1,13 @@
-package com.benhurqs.circleconstrainlayout
+package com.benhurqs.circularlist.widget
 
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.widget.Adapter
 
 /**
  * Created by benhur.souza on 04/04/18.
@@ -44,31 +41,33 @@ class CircularList: ConstraintLayout{
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-
-    fun start(){
+    fun setAdapter(adapter: CircularListAdapter){
         var list = ArrayList<View>()
-        for(i in 0..(this.childCount-1)){
+        for(i in 0 until adapter.getItemCount()){
             //Item
-           list.add(this.getChildAt(i))
+            val view = adapter.onCreateItemView(this.context)
+            adapter.onBindView(view, i)
+            list.add(view)
         }
         setItens(list)
     }
+
 
     fun setItens(itemList: List<View>){
         setItens(null, itemList)
     }
 
-    fun setOnClickItemListener(listener: OnClickItemListener): CircularList{
+    fun setOnClickItemListener(listener: OnClickItemListener): CircularList {
         this.clickListener = listener
         return this
     }
 
-    fun setOnAnimationListener(listener: OnAnimationListener): CircularList{
+    fun setOnAnimationListener(listener: OnAnimationListener): CircularList {
         this.animationListener = listener
         return this
     }
 
-    fun setOnAnimationItemListener(listener: OnAnimationItemListener): CircularList{
+    fun setOnAnimationItemListener(listener: OnAnimationItemListener): CircularList {
         this.animationItemListener = listener
         return this
     }
